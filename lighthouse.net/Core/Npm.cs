@@ -9,7 +9,7 @@ namespace lighthouse.net.Core
     {
         protected override string ExeFileName => @"C:\Program Files\nodejs\npm.cmd";
 
-        internal async Task<string> GetNodesGlobalPath()
+        internal async Task<string> GetNpmPath()
         {
             var rsp = await this.Execute("config get prefix");
             if (String.IsNullOrEmpty(rsp)) throw new Exception("Couldn't detect global node_modules path.");

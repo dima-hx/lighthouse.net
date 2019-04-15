@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using lighthouse.net.Objects;
+using Newtonsoft.Json;
 
 namespace lighthouse.net.Core
 {
@@ -12,9 +14,35 @@ namespace lighthouse.net.Core
             this._templatePath = template_path;
         }
 
-        internal string Produce()
+        internal string Produce(AuditRequest request, string npmPath)
         {
+            if (request == null) return null;
             var data = File.ReadAllText(this._templatePath);
+
+            var jsOptions = new LighthouseJsOptions()
+            {
+                chromeFlags = new []
+                {
+                    "--show-paint-rects"
+                },
+                maxWaitForLoad = request.MaxWaitForLoad,
+                blockedUrlPatterns = request.BlockedUrlPatterns,
+                disableStorageReset = request.DisableStorageReset,
+                disableDeviceEmulation = request.DisableDeviceEmulation,
+                emulatedFormFactor = request.EmulatedFormFactor?.ToString().ToLower()
+            };
+
+            var optionsAsJson = JsonConvert.SerializeObject(jsOptions,
+                Formatting.None,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+            data = data.Replace("{OPTIONS}", optionsAsJson)
+                .Replace("{URL}", request.Url)
+                .Replace("{NODE_MODULES}", npmPath.Replace("\\", "\\\\") + "\\\\node_modules");
+
             return data;
         }
         public bool Save(string content)

@@ -8,8 +8,10 @@
     <PackageProjectUrl>https://github.com/dima-horror/lighthouse.net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dima-horror/lighthouse.net</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
-    <PackageTags>lighthouse</PackageTags>
+    <PackageTags>lighthouse, audit, performance-metrics, pwa, web, developer-tools</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Version>1.0.1</Version>
+    <PackageIconUrl>https://developers.google.com/web/progressive-web-apps/images/pwa-lighthouse.png</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +19,16 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp">
+      <HintPath>..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Microsoft.CSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

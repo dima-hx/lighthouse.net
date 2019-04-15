@@ -1,4 +1,5 @@
 ﻿using System;
+using lighthouse.net.Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace lighthouse.net.tests
@@ -10,7 +11,7 @@ namespace lighthouse.net.tests
         public void NpmExistTest()
         {
             var lh = new Lighthouse();
-            var a = lh.check_npm_installed().Result;
+            var a = lh.Run("https://example.com/").Result;
         }
     }
 }

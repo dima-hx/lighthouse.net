@@ -10,9 +10,8 @@ namespace lighthouse.net.Core
         protected override string ExeFileName => @"C:\Program Files\nodejs\node.exe";
         public async Task<string> Run(string jsFilePath)
         {
-            var rsp = await this.Execute(jsFilePath);
-
-            return rsp;
+            return await this.Execute(jsFilePath);
         }
     }
+
 }

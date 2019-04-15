@@ -17,18 +17,12 @@ namespace lighthouse.net.Core
                 UseShellExecute = false
             };
             var process = Process.Start(processInfo);
-            //process.OutputDataReceived += (sender, args) =>
-            //{
+            if (process == null) return await Task.FromResult<string>(null);
 
-            //};
-            //process.BeginOutputReadLine();
-            //process.StandardInput.WriteLine("npm.exe");
-            if(process == null) return await Task.FromResult<string>(null);
-
-            var a = await process.StandardOutput.ReadToEndAsync();
+            var output = await process.StandardOutput.ReadToEndAsync();
             process.WaitForExit();
 
-            return a;
+            return output;
         }
     }
 }
