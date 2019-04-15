@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Authors>Dima Horror</Authors>
+    <Description>Auditing, performance metrics, and best practices for Progressive Web Apps in .NET tests.</Description>
+    <PackageProjectUrl>https://github.com/dima-horror/lighthouse.net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dima-horror/lighthouse.net</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageTags>lighthouse</PackageTags>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Node\template.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
