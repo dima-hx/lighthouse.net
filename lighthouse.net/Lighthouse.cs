@@ -9,6 +9,7 @@ using lighthouse.net.Objects;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 
 namespace lighthouse.net
@@ -26,28 +27,45 @@ namespace lighthouse.net
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
 
-            var npm = new Npm();
-            var npmPath = npm.GetNpmPath();
-
-            var sm = new ScriptMaker($"{AppDomain.CurrentDomain.BaseDirectory}\\Node\\template.js");
-
-            var content = sm.Produce(request, npmPath.Result);
-            if (sm.Save(content))
+            var cmd = new WhereCmd()
             {
-                try
-                {
-                    var node = new Node();
-                    var stdoutJson = await node.Run(sm.TempFileName);
-                    var obj = parseJson(stdoutJson);
-                    return await Task.FromResult(obj);
-                }
-                finally
-                {
-                    sm.Delete();
-                }
-            }
+                EnableDebugging = request.EnableLogging
+            };
+            var nodePath = await cmd.GetNodePath();
+            if (String.IsNullOrEmpty(nodePath) || !File.Exists(nodePath)) throw new Exception("Couldn't find NodeJs. Please, install NodeJs and make shure than PATH variable defined.");
 
-            return await Task.FromResult<AuditResult>(null);
+            var npm = new Npm(nodePath)
+            {
+                EnableDebugging = request.EnableLogging
+            };
+            var npmPath = await npm.GetNpmPath();
+
+            var sm = new ScriptMaker();
+            var content = sm.Produce(request, npmPath);
+            if (!sm.Save(content)) throw new Exception($"Couldn't save JS script to %temp% directory. Path: {sm.TempFileName}");
+
+            try
+            {
+                var node = new Node()
+                {
+                    EnableDebugging = request.EnableLogging
+                };
+                var stdoutJson = await node.Run(sm.TempFileName);
+                var obj = parseJson(stdoutJson);
+                return await Task.FromResult(obj);
+            }
+            catch(Exception ex)
+            {
+                if (!String.IsNullOrEmpty(ex.Message) && Regex.IsMatch(ex.Message, @"Cannot find module[\s\S]+?node_modules\\lighthouse'"))
+                {
+                    throw new Exception("Lighthouse is not installed. Please, execute `npm install -g lighthouse` in console.");
+                }
+                throw;
+            }
+            finally
+            {
+                if (!npm.EnableDebugging) sm.Delete();
+            }
         }
 
         private AuditResult parseJson(string json)

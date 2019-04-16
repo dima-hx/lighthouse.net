@@ -7,23 +7,22 @@ namespace lighthouse.net.Core
 {
     internal sealed class ScriptMaker
     {
-        private readonly string _templatePath;
         internal string TempFileName { get; private set; }
-        internal ScriptMaker(string template_path)
+        internal ScriptMaker()
         {
-            this._templatePath = template_path;
         }
 
         internal string Produce(AuditRequest request, string npmPath)
         {
             if (request == null) return null;
-            var data = File.ReadAllText(this._templatePath);
+            var data = this.getTemplate();
 
             var jsOptions = new LighthouseJsOptions()
             {
                 chromeFlags = new []
                 {
-                    "--show-paint-rects"
+                    "--show-paint-rects",
+                    "--headless"
                 },
                 maxWaitForLoad = request.MaxWaitForLoad,
                 blockedUrlPatterns = request.BlockedUrlPatterns,
@@ -38,7 +37,7 @@ namespace lighthouse.net.Core
                 {
                     NullValueHandling = NullValueHandling.Ignore
                 });
-
+            
             data = data.Replace("{OPTIONS}", optionsAsJson)
                 .Replace("{URL}", request.Url)
                 .Replace("{NODE_MODULES}", npmPath.Replace("\\", "\\\\") + "\\\\node_modules");
@@ -51,7 +50,7 @@ namespace lighthouse.net.Core
 
             string tempPath = Path.GetTempPath();
 
-            var fullPath = $"{tempPath}\\lighthouse-net-{Guid.NewGuid():N}.js";
+            var fullPath = $"{tempPath}lighthouse-net-{Guid.NewGuid():N}.js";
             try
             {
                 File.WriteAllText(fullPath, content);
@@ -76,6 +75,37 @@ namespace lighthouse.net.Core
 
             }
             return false;
+        }
+
+        private string getTemplate()
+        {
+            return @"
+const lighthouse = require('{NODE_MODULES}\\lighthouse');
+const chromeLauncher = require('{NODE_MODULES}\\lighthouse\\node_modules\\chrome-launcher');
+const Configstore = require('{NODE_MODULES}\\lighthouse\\node_modules\\configstore');
+
+function setLighthouseConfig(){
+    const configstore = new Configstore('lighthouse');
+    configstore.set('isErrorReportingEnabled', true);
+}
+
+function launchChromeAndRunLighthouse(url, opts, config = null) {
+    return chromeLauncher.launch({ chromeFlags: opts.chromeFlags }).then(chrome => {
+        opts.port = chrome.port;
+        return lighthouse(url, opts, config).then(results => {
+            return chrome.kill().then(() => results.lhr);
+        });
+    });
+}
+
+setLighthouseConfig();
+
+const opts = {OPTIONS};
+
+launchChromeAndRunLighthouse('{URL}', opts).then(results => {
+    console.log(JSON.stringify(results));
+});";
+
         }
     }
 }

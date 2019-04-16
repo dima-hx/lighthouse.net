@@ -41,6 +41,8 @@ namespace lighthouse.net.Objects
         /// </summary>
         public FormFactor? EmulatedFormFactor { get; set; }
 
+        public bool EnableLogging { get; set; }
+
         public enum FormFactor : byte
         {
             Mobile,

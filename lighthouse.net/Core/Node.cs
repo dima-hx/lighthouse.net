@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace lighthouse.net.Core
 {
-    internal sealed class Node : CmdBase
+    internal sealed class Node : TerminalBase
     {
-        protected override string ExeFileName => @"C:\Program Files\nodejs\node.exe";
+        protected override string FileName => "node";
         public async Task<string> Run(string jsFilePath)
         {
             return await this.Execute(jsFilePath);
+        }
+        protected override void OnError(string message)
+        {
+            throw new Exception(message);
         }
     }
 

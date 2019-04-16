@@ -11,7 +11,11 @@ namespace lighthouse.net.tests
         public void NpmExistTest()
         {
             var lh = new Lighthouse();
-            var a = lh.Run("https://example.com/").Result;
+            var res = lh.Run("http://example.com").Result;
+
+            Assert.IsNotNull(res);
+            Assert.IsNotNull(res.Performance);
+            Assert.IsTrue(res.Performance > 0.5m);
         }
     }
 }
