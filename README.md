@@ -5,7 +5,8 @@ Lighthouse.NET analyzes web apps and web pages, collecting modern performance me
 
 *Auditing, performance metrics, and best practices for Progressive Web Apps in .NET tests.*
 
-###How to install
+### How to install
+
 You need to install lighthouse as Node module on machine ([more info](https://developers.google.com/web/tools/lighthouse/)).
 
 1. Download [Google Chrome](https://www.google.com/chrome/) for Desktop.
@@ -14,10 +15,12 @@ You need to install lighthouse as Node module on machine ([more info](https://de
 `npm install -g lighthouse`
 
 4. Install lighthouse.net into your project via NuGet
-`PM> Install-Package lighthouse.net`
+```
+PM> Install-Package lighthouse.net
+```
 
 
-###Basic example
+### Basic example
 
 ```csharp
 [TestClass]
