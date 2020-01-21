@@ -43,11 +43,17 @@ namespace lighthouse.net.Objects
 
         public bool EnableLogging { get; set; }
 
+        /// <summary>
+        /// Only run the specified categories. Available categories: accessibility, best-practices, performance, pwa, seo
+        /// </summary>
+        public string[] OnlyCategories { get; set; }
+
         public enum FormFactor : byte
         {
             Mobile,
             Desktop,
             None
         }
+
     }
 }

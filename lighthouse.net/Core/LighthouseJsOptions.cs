@@ -13,6 +13,8 @@ namespace lighthouse.net.Core
         public bool? disableDeviceEmulation { get; set; }
         public string emulatedFormFactor { get; set; }
 
+        public string[] onlyCategories { get; set; }
+
         public ThrottlingSettings throttling { get; set;}
 
         internal sealed class ThrottlingSettings

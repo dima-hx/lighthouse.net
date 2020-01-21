@@ -28,7 +28,8 @@ namespace lighthouse.net.Core
                 blockedUrlPatterns = request.BlockedUrlPatterns,
                 disableStorageReset = request.DisableStorageReset,
                 disableDeviceEmulation = request.DisableDeviceEmulation,
-                emulatedFormFactor = request.EmulatedFormFactor?.ToString().ToLower()
+                emulatedFormFactor = request.EmulatedFormFactor?.ToString().ToLower(),
+                onlyCategories = request.OnlyCategories
             };
 
             var optionsAsJson = JsonConvert.SerializeObject(jsOptions,
