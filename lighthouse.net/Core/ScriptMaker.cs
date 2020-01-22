@@ -28,6 +28,8 @@ namespace lighthouse.net.Core
                 blockedUrlPatterns = request.BlockedUrlPatterns,
                 disableStorageReset = request.DisableStorageReset,
                 disableDeviceEmulation = request.DisableDeviceEmulation,
+                OnlyCategories = request.OnlyCategories,
+
                 emulatedFormFactor = request.EmulatedFormFactor?.ToString().ToLower()
             };
 

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace lighthouse.net.Objects
 {
@@ -24,7 +27,7 @@ namespace lighthouse.net.Objects
         /// <summary>
         /// List of URL patterns to block
         /// </summary>
-        public string[] BlockedUrlPatterns { get; set; }
+        public IEnumerable<string> BlockedUrlPatterns { get; set; }
 
         /// <summary>
         /// Flag indicating that the browser storage should not be reset for the audit
@@ -40,6 +43,11 @@ namespace lighthouse.net.Objects
         /// The form factor the emulation should use
         /// </summary>
         public FormFactor? EmulatedFormFactor { get; set; }
+
+        /// <summary>
+        /// Only run the specified categories. Available categories: accessibility, best-practices, performance, pwa, seo
+        /// </summary>
+        public IEnumerable<Category> OnlyCategories {get; set;}
 
         public bool EnableLogging { get; set; }
 
