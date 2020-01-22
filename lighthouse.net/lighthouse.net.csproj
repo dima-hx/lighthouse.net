@@ -10,10 +10,10 @@
     <RepositoryType>github</RepositoryType>
     <PackageTags>lighthouse, audit, performance-metrics, pwa, web, developer-tools</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <PackageIconUrl>https://developers.google.com/web/progressive-web-apps/images/pwa-lighthouse.png</PackageIconUrl>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
