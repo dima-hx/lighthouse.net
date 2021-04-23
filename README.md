@@ -35,10 +35,10 @@ PM> Install-Package lighthouse.net
 public class LighthouseTest
 {
     [TestMethod]
-    public void ExampleComAudit()
+    public async Task ExampleComAudit()
     {
         var lh = new Lighthouse();
-        var res = lh.Run("http://example.com").Result;
+        var res = await lh.Run("http://example.com");
         Assert.IsNotNull(res);
         Assert.IsNotNull(res.Performance);
         Assert.IsTrue(res.Performance > 0.5m);

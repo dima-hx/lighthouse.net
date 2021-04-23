@@ -8,6 +8,6 @@ namespace lighthouse.net.Objects
     {
         public string Name { get; set; }
         public decimal? Score { get; set; }
-        public object RowValue { get; set; }
+        public decimal? NumericValue {get; set;}
     }
 }
