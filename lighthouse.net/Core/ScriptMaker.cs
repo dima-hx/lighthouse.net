@@ -22,7 +22,8 @@ namespace lighthouse.net.Core
                 chromeFlags = new []
                 {
                     "--show-paint-rects",
-                    "--headless"
+                    "--headless",
+                    "--no-sandbox"
                 },
                 maxWaitForLoad = request.MaxWaitForLoad,
                 blockedUrlPatterns = request.BlockedUrlPatterns,
