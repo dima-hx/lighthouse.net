@@ -81,7 +81,7 @@ namespace lighthouse.net.Core
             }
             catch (Exception)
             {
-
+                // ignore
             }
             return false;
         }

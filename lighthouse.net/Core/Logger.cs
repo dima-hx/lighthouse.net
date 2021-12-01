@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace lighthouse.net.Core
 {
@@ -9,18 +7,19 @@ namespace lighthouse.net.Core
     {
         private readonly string _tempDirectory;
         private readonly string _fileName;
+        private readonly object lockObj = new object();
+
         internal Logger(string name)
         {
             this._tempDirectory = Path.GetTempPath();
             this._fileName = $"{name}-{Guid.NewGuid():N}.txt";
         }
 
-
         public bool Append(string content)
         {
             try
             {
-                lock (this)
+                lock (lockObj)
                 {
                     File.AppendAllText(_tempDirectory + _fileName, content);
                 }
@@ -28,6 +27,7 @@ namespace lighthouse.net.Core
             }
             catch
             {
+                // ignore
             }
             return false;
         }
