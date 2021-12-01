@@ -37,8 +37,10 @@ namespace lighthouse.net
             };
             var npmPath = await npm.GetNpmPath().ConfigureAwait(false);
 
+            var version = await npm.GetLighthouseVersion().ConfigureAwait(false);
+
             var sm = new ScriptMaker();
-            var content = sm.Produce(request, npmPath);
+            var content = sm.Produce(request, npmPath, version);
             if (!sm.Save(content)) throw new Exception($"Couldn't save JS script to %temp% directory. Path: {sm.TempFileName}");
 
             try

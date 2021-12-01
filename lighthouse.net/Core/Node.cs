@@ -11,7 +11,7 @@ namespace lighthouse.net.Core
         protected override string FileName => "node";
         public async Task<string> Run(string jsFilePath)
         {
-            return await this.Execute(jsFilePath).ConfigureAwait(false);
+            return await this.Execute("--harmony --unhandled-rejections=strict " + jsFilePath).ConfigureAwait(false);
         }
         protected override void OnError(string message)
         {
