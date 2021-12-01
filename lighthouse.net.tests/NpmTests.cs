@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using lighthouse.net.Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using static lighthouse.net.Objects.AuditRequest;
 
 namespace lighthouse.net.tests
 {
@@ -64,6 +65,20 @@ namespace lighthouse.net.tests
             Assert.IsNotNull(res.Thumbnails);
             Assert.IsFalse(res.Thumbnails.Count == 0);
             Assert.IsFalse(String.IsNullOrWhiteSpace(res.Thumbnails[0].Base64Data));
+        }
+  
+        [TestMethod]
+        public async Task FormFactorTest()
+        {
+            var lh = new Lighthouse();
+            var ar = new AuditRequest("http://example.com")
+            {
+                EmulatedFormFactor = FormFactor.Desktop
+            };
+
+            var res = await lh.Run(ar);
+
+            Assert.IsNotNull(res);
         }
     }
 }

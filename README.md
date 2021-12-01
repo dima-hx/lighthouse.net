@@ -57,3 +57,7 @@ public class LighthouseTest
     }
 }
 ```
+
+
+### Known Issues
+- If you installed lighthouse package with version 9.0.0 and higher it's required to use Node.js version 14 (because Optional Chaining Operator is used in lighthouse package). To install lighthouse package, that supports Node.js v12 please use `npm i lighthouse@8.6.0 -g`

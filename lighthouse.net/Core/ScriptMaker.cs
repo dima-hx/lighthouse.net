@@ -12,7 +12,7 @@ namespace lighthouse.net.Core
         {
         }
 
-        internal string Produce(AuditRequest request, string npmPath)
+        internal string Produce(AuditRequest request, string npmPath, NpmPackageVersion lighthouseVersion)
         {
             if (request == null) return null;
             var data = this.getTemplate();
@@ -33,6 +33,12 @@ namespace lighthouse.net.Core
 
                 emulatedFormFactor = request.EmulatedFormFactor?.ToString().ToLower()
             };
+            // https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md
+            if (lighthouseVersion.MajorVersion >= 7)
+            {
+                jsOptions.preset = jsOptions.emulatedFormFactor;
+                jsOptions.emulatedFormFactor  = null;
+            }
 
             var optionsAsJson = JsonConvert.SerializeObject(jsOptions,
                 Formatting.None,
@@ -75,7 +81,7 @@ namespace lighthouse.net.Core
             }
             catch (Exception)
             {
-
+                // ignore
             }
             return false;
         }

@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Threading.Tasks;
 using lighthouse.net.Core;
 using lighthouse.net.Objects;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-using System.Text;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json.Linq;
 
 namespace lighthouse.net
 {
@@ -20,10 +13,13 @@ namespace lighthouse.net
         {
             return await Run(new AuditRequest(urlWithProtocol)).ConfigureAwait(false);
         }
-        public async Task<AuditResult> Run(AuditRequest request)
+        public Task<AuditResult> Run(AuditRequest request)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
-
+            return RunAfterCheck(request);
+        }
+        private async Task<AuditResult> RunAfterCheck(AuditRequest request)
+        {
             var cmd = new WhereCmd()
             {
                 EnableDebugging = request.EnableLogging
@@ -37,8 +33,10 @@ namespace lighthouse.net
             };
             var npmPath = await npm.GetNpmPath().ConfigureAwait(false);
 
+            var version = await npm.GetLighthouseVersion().ConfigureAwait(false);
+
             var sm = new ScriptMaker();
-            var content = sm.Produce(request, npmPath);
+            var content = sm.Produce(request, npmPath, version);
             if (!sm.Save(content)) throw new Exception($"Couldn't save JS script to %temp% directory. Path: {sm.TempFileName}");
 
             try
